@@ -1,0 +1,21 @@
+# Eclipse
+.metadata/
+.settings/
+.classpath
+.project
+
+# Maven
+**/target/
+
+# Spring Tools
+.sts4-cache/
+
+# Java
+*.class
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
