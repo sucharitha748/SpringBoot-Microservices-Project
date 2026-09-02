@@ -4,6 +4,7 @@ import com.example.orderservice.dto.UserResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,8 @@ public class UserClientService {
 
     private static final Logger log =
             LoggerFactory.getLogger(UserClientService.class);
+
+    private static final String CORRELATION_ID = "X-Correlation-ID";
 
     private final RestClient restClient;
 
@@ -39,15 +42,19 @@ public class UserClientService {
     )
     public UserResponse getUser(Long userId) {
 
+        String correlationId = MDC.get("correlationId");
+
         log.info(
-                "Calling User Service for user: {}",
-                userId
+                "Calling User Service for user: {} with correlationId: {}",
+                userId,
+                correlationId
         );
 
         try {
 
             UserResponse response = restClient.get()
                     .uri(userServiceUrl + "/api/users/" + userId)
+                    .header(CORRELATION_ID, correlationId)
                     .retrieve()
                     .body(UserResponse.class);
 

@@ -11,6 +11,8 @@ import com.example.orderservice.repository.OrderItemRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.CompletableFuture;
+
 @Service
 public class OrderService {
 
@@ -41,6 +43,21 @@ public class OrderService {
         );
 
         Order savedOrder = orderRepository.save(order);
+
+        // Day 11 - Asynchronous Processing
+        CompletableFuture.runAsync(() -> {
+
+            System.out.println(
+                    "OrderCreated Event Published For Order : "
+                            + savedOrder.getOrderId()
+            );
+
+            System.out.println(
+                    "Async processing started for Order : "
+                            + savedOrder.getOrderId()
+            );
+
+        });
 
         return savedOrder;
     }
